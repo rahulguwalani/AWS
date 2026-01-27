@@ -16,10 +16,11 @@ phases:
   build:
     commands:
       - echo "Building the project..."
-      - cd CICD/flask-app
-      - echo "Building images..."
-      - docker build -t "$DOCKER_REGISTRY_URL/myapp:latest"
-      - docker push "$DOCKER_REGISTRY_URL/myapp:latest"
+      - cd CICD/flask-app/
+      - echo "Building docker image..."
+      - echo "$DOCKER_REGISTRY_PASSWORD" | docker login "$DOCKER_REGISTRY_URL" -u "$DOCKER_REGISTRY_USERNAME" --password-stdin 
+      - docker build -t "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/python-flask:latest" .
+      - docker push "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/python-flask:latest"
   post_build:
     commands:
       - echo "Build completed on `date`"
